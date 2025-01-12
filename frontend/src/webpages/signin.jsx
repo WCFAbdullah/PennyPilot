@@ -6,7 +6,7 @@ function SignInPage() {
       <SignIn 
         routing="path" 
         path="/sign-in" 
-        redirectUrl="/dashboard"
+        redirectToAfterSignIn="/dashboard"
         signUpUrl="/sign-up"
       />
     </div>

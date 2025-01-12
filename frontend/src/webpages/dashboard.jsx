@@ -5,6 +5,28 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { PlusIcon, TrashIcon, PencilIcon, ChartBarIcon, CurrencyDollarIcon, CalendarIcon } from '@heroicons/react/20/solid';
 import { useUser } from '@clerk/clerk-react';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend, LineElement } from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+const dateInputStyle = {
+    colorScheme: 'dark',  
+    color: 'white',
+    backgroundColor: 'transparent',
+    border: '1px solid #4a5568',  
+    borderRadius: '0.375rem',  
+    padding: '0.5rem',
+    cursor: 'pointer'
+};
 
 const TimeBasedGreeting = () => {
   const [greeting, setGreeting] = useState('');
@@ -118,7 +140,49 @@ function Dashboard() {
         category: ''
     });
 
+    const prepareLineChartData = () => {
+        if (!expenses || expenses.length === 0) {
+            return {
+                labels: [],
+                datasets: [{
+                    label: 'Expenses',
+                    data: [],
+                    borderColor: '#fff',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    tension: 0.4
+                }]
+            };
+        }
     
+        const sortedExpenses = [...expenses]
+            .sort((a, b) => new Date(a.date) - new Date(b.date))
+            .map(exp => ({
+                ...exp,
+                amount: Number(exp.amount) || 0,
+                date: new Date(exp.date).toLocaleDateString()
+            }));
+    
+        return {
+            labels: sortedExpenses.map(exp => exp.date),
+            datasets: [{
+                label: 'Expenses',
+                data: sortedExpenses.map(exp => exp.amount),
+                borderColor: 'rgba(255, 255, 255, 0.8)',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: 'rgba(255, 255, 255, 0.8)',
+                pointHoverRadius: 6,
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: '#fff',
+                pointBorderWidth: 2,
+                borderWidth: 2,
+            }]
+        };
+    };
+
     useEffect(() => {
         const fetchExpenses = async () => {
             try {
@@ -192,36 +256,105 @@ function Dashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-950 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <TimeBasedGreeting />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-gray-900/50 backdrop-blur rounded-xl shadow-lg p-6 flex items-center space-x-4 border border-indigo-500/20">
-                        <div className="p-3 bg-indigo-500/20 rounded-full">
-                            <CurrencyDollarIcon className="h-8 w-8 text-indigo-400" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    <div className="flex flex-col justify-center space-y-5">
+                        <div className="bg-gray-900/50 backdrop-blur rounded-xl shadow-lg p-6 flex items-center space-x-4 border border-indigo-500/20">
+                            <div className="p-3 bg-indigo-400/20 rounded-full">
+                                <CurrencyDollarIcon className="h-8 w-8 text-indigo-300" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-indigo-300">Total Expenses</p>
+                                <p className="text-2xl font-semibold text-indigo-100">${calculateTotalExpenses()}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p className="text-sm font-medium text-indigo-300">Total Expenses</p>
-                            <p className="text-2xl font-semibold text-indigo-100">${calculateTotalExpenses()}</p>
+                        <div className="bg-gray-900/50 backdrop-blur rounded-xl shadow-lg p-6 flex items-center space-x-4 border border-indigo-500/20">
+                            <div className="p-3 bg-indigo-400/20 rounded-full">
+                                <ChartBarIcon className="h-8 w-8 text-indigo-300" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-indigo-300">Number of Expenses</p>
+                                <p className="text-2xl font-semibold text-indigo-100">{expenses.length}</p>
+                            </div>
+                        </div>
+                        <div className="bg-gray-900/50 backdrop-blur rounded-xl shadow-lg p-6 flex items-center space-x-4 border border-indigo-500/20">
+                            <div className="p-3 bg-indigo-400/20 rounded-full">
+                                <CalendarIcon className="h-8 w-8 text-indigo-300" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-indigo-300">Last Updated</p>
+                                <p className="text-2xl font-semibold text-indigo-100">{new Date().toLocaleDateString()}</p>
+                            </div>
                         </div>
                     </div>
-                    <div className="bg-gray-900/50 backdrop-blur rounded-xl shadow-lg p-6 flex items-center space-x-4 border border-indigo-500/20">
-                        <div className="p-3 bg-indigo-500/20 rounded-full">
-                            <ChartBarIcon className="h-8 w-8 text-indigo-400" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-medium text-indigo-300">Number of Expenses</p>
-                            <p className="text-2xl font-semibold text-indigo-100">{expenses.length}</p>
-                        </div>
-                    </div>
-                    <div className="bg-gray-900/50 backdrop-blur rounded-xl shadow-lg p-6 flex items-center space-x-4 border border-indigo-500/20">
-                        <div className="p-3 bg-indigo-500/20 rounded-full">
-                            <CalendarIcon className="h-8 w-8 text-indigo-400" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-medium text-indigo-300">Last Updated</p>
-                            <p className="text-2xl font-semibold text-indigo-100">{new Date().toLocaleDateString()}</p>
+
+                    <div className="flex items-center justify-center">
+                        <div className="backdrop-blur-sm bg-white/5 rounded-xl border border-white/10 p-6 shadow-xl text-center w-full">
+                            <h2 className="text-xl font-semibold text-white/90 mb-4">Expense Timeline</h2>
+                            {expenses.length > 0 ? (
+                                <Line 
+                                    data={prepareLineChartData()}
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: true,
+                                        plugins: {
+                                            legend: {
+                                                display: false // Hide legend since we have a title
+                                            },
+                                            tooltip: {
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                titleColor: '#fff',
+                                                bodyColor: '#fff',
+                                                borderColor: 'rgba(255, 255, 255, 0.1)',
+                                                borderWidth: 1,
+                                                padding: 12,
+                                                displayColors: false,
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        return `$${context.parsed.y.toFixed(2)}`;
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                grid: {
+                                                    color: 'rgba(255, 255, 255, 0.1)',
+                                                    drawBorder: false,
+                                                },
+                                                ticks: {
+                                                    color: 'rgba(255, 255, 255, 0.7)',
+                                                    padding: 10,
+                                                    callback: function(value) {
+                                                        return '$' + value;
+                                                    }
+                                                }
+                                            },
+                                            x: {
+                                                grid: {
+                                                    display: false, // Hide x grid lines for cleaner look
+                                                },
+                                                ticks: {
+                                                    color: 'rgba(255, 255, 255, 0.7)',
+                                                    padding: 10,
+                                                    maxRotation: 45,
+                                                    minRotation: 45
+                                                }
+                                            }
+                                        },
+                                        interaction: {
+                                            intersect: false,
+                                            mode: 'index'
+                                        }
+                                    }}
+                                />
+                            ) : (
+                                <p className="text-white/70">No expenses found</p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -284,7 +417,9 @@ function Dashboard() {
                                                     );
                                                     setExpenses(updatedExpenses);
                                                 }}
-                                                className="px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
+                                                style={dateInputStyle}
+                                                className="[color-scheme:dark]px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
+                                                
                                             />
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -321,7 +456,7 @@ function Dashboard() {
                     </div>
                 </div>
 
-                <div className="bg-gray-900/50 backdrop-blur shadow-lg rounded-xl p-6 border border-indigo-500/20">
+                <div className="bg-gray-900/50 backdrop-blur shadow-lg rounded-xl p-6 border border-indigo-500/20 mb-16">
                     <h2 className="text-2xl font-semibold mb-4 text-indigo-100">Add New Expense</h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -379,7 +514,7 @@ function Dashboard() {
                             </div>
                         </div>
                         <div>
-                            <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
+                            <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-700 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
                                 <PlusIcon className="h-5 w-5 mr-2" />
                                 Add Expense
                             </button>
@@ -388,7 +523,7 @@ function Dashboard() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Dashboard;

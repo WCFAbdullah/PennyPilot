@@ -7,7 +7,6 @@ const getExpenses = async (req, res) => {
         res.json(expenses);
     } catch (error) {
         res.status(500).json({ message: error.message });
-        console.log(error);
     }
 };
 
@@ -36,7 +35,6 @@ const updateExpense = async (req, res) => {
             return res.status(404).json({ message: 'Expense not found' });
         }
 
-        // Check if expense belongs to the user
         if (expense.userId !== req.auth.userId) {
             return res.status(403).json({ message: 'Not authorized' });
         }
@@ -55,18 +53,16 @@ const updateExpense = async (req, res) => {
 // Delete an expense
 const deleteExpense = async (req, res) => {
     try {
-        const expense = await Expense.findById(req.params.id);
+        const expense = await Expense.findByIdAndDelete(req.params.id);
         
         if (!expense) {
             return res.status(404).json({ message: 'Expense not found' });
         }
 
-        // Check if the expense belongs to the user
         if (expense.userId !== req.auth.userId) {
             return res.status(403).json({ message: 'Not authorized' });
         }
 
-        await expense.remove();
         res.json({ message: 'Expense removed' });
     } catch (error) {
         res.status(500).json({ message: error.message });

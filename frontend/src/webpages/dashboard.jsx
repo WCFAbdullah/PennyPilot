@@ -43,19 +43,36 @@ export const createExpense = async (token, expense) => {
     }
 }
 
-export const updateExpense = async (id, expense) => {
-    try{
-        const response = await axios.put(`${API_URL}/api/expenses/${id}`, expense);
+export const updateExpense = async (token, id, expense) => {
+    try {
+        const response = await axios.put(
+            `${API_URL}/api/expenses/${id}`, 
+            {  
+                description: expense.description,
+                amount: expense.amount,
+                date: expense.date,
+                category: expense.category
+            },
+            {  
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
         return response.data;
     } catch (error) {
-        console.error("Error", error);
+        console.error("Error updating expense:", error);
         throw error;
     }
-}
+};
 
-export const deleteExpense = async (id) => {
+export const deleteExpense = async (token, id) => {
     try{
-        const response = await axios.delete(`${API_URL}/api/expenses/${id}`)
+        const response = await axios.delete(`${API_URL}/api/expenses/${id}`, {
+            headers: {
+                'Authorization' : `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("Error", error);
@@ -81,6 +98,7 @@ function Dashboard() {
                 const token = await getToken();
                 const data = await getExpense(token);
                 setExpenses(data);
+                
             } catch (error) {
                 console.error("Failed to fetch expenses:", error);
             }
@@ -89,7 +107,8 @@ function Dashboard() {
         if (isSignedIn) {  // Only fetch if user is signed in
             fetchExpenses();
         }
-    }, [isSignedIn, getToken]);  
+    }, [isSignedIn, getToken]); 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -105,6 +124,29 @@ function Dashboard() {
             });
         } catch (error) {
             console.error("Failed to create expense:", error);
+        }
+
+    }
+
+    const handleDelete = async (id) => {
+        try {
+            const token = await getToken();
+            await deleteExpense(token, id);
+            const updatedExpenses = await getExpense(token);
+            setExpenses(updatedExpenses);
+        } catch (error) {
+            console.error("Failed to delete expense:", error);
+        }
+    }
+
+    const handleUpdate = async (expense) => {
+        try {
+            const token = await getToken();
+            await updateExpense(token, expense._id, expense);
+            const updatedExpenses = await getExpense(token);
+            setExpenses(updatedExpenses);
+        } catch (error) {
+            console.error("Failed to update expense:", error);
         }
     }
 
@@ -127,11 +169,64 @@ function Dashboard() {
                     </thead>
                     <tbody>
                         {expenses.map((expense) => (
-                            <tr key = {expense.id}>
-                                <td>{expense.description}</td>
-                                <td>{expense.amount}</td>
-                                <td>{expense.date}</td>
-                                <td>{expense.category}</td>
+                            <tr key = {expense._id}>
+                                <td><input
+                                    type="text"
+                                    value={expense.description}
+                                    onChange={(e) => {
+                                        const updatedExpenses = expenses.map(exp => 
+                                            exp._id === expense._id 
+                                                ? {...exp, description: e.target.value}
+                                                : exp
+                                        );
+                                        setExpenses(updatedExpenses);
+                                    }}
+                                />
+                                </td>
+                                <td><input
+                                    type="number"
+                                    value={expense.amount}
+                                    onChange={(e) => {
+                                        const updatedExpenses = expenses.map(exp => 
+                                            exp._id === expense._id ? {...exp, amount: e.target.value} : exp
+                                        );
+                                        setExpenses(updatedExpenses);
+                                    }}
+                                />
+                                </td>
+                                <td>
+                                    <input
+                                        type="date"
+                                        value={expense.date}
+                                        onChange={(e) => {
+                                            const updatedExpenses = expenses.map(exp => 
+                                                exp._id === expense._id ? {...exp, date: e.target.value} : exp
+                                            );
+                                            setExpenses(updatedExpenses);
+                                        }}
+                                    />
+                                </td>
+                                <td>
+                                    <select
+                                        value={expense.category}
+                                        onChange={(e) => {
+                                            const updatedExpenses = expenses.map(exp => 
+                                                exp._id === expense._id ? {...exp, category: e.target.value} : exp
+                                            );
+                                            setExpenses(updatedExpenses);
+                                        }}
+                                    >
+                                        <option value = "">Select a category</option>
+                                        <option value = "Food">Food</option>
+                                        <option value = "Transport">Transport</option>
+                                        <option value = "Entertainment">Entertainment</option>
+                                        <option value = "Other">Other</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button onClick = { () => handleDelete(expense._id)}>Delete</button>
+                                    <button onClick = { () => handleUpdate(expense)}>Update</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -166,6 +261,7 @@ function Dashboard() {
                     <option value = "Other">Other</option>
                 </select>
                 <button type = "submit">Add Expense</button>
+                <button onClick = {() => handleUpdate(expense)}>Update</button>
             </form>
         </div>
     )

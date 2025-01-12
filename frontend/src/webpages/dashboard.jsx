@@ -22,9 +22,20 @@ export const getExpense = async (token) => {
     }
 };
 
-export const createExpense = async (expense) => {
+export const createExpense = async (token, expense) => {
     try{
-        const response = await axios.post(`${API_URL}/api/expenses`, expense);
+        const response = await axios.post(`${API_URL}/api/expenses`, {
+            description: expense.description,
+            amount: expense.amount,
+            date: expense.date,
+            category: expense.category
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        );
         return response.data;
     } catch (error) {
         console.error("Error", error);
@@ -57,7 +68,13 @@ function Dashboard() {
     const [expenses, setExpenses] = useState([]);
     const { isSignedIn } = useAuth();
     const { getToken } = useAuth();
-    
+    const [newExpense, setNewExpense] = useState({
+        description: '',
+        amount: '',
+        date: '',
+        category: ''
+    });
+
     useEffect(() => {
         const fetchExpenses = async () => {
             try {
@@ -73,6 +90,23 @@ function Dashboard() {
             fetchExpenses();
         }
     }, [isSignedIn, getToken]);  
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const token = await getToken();
+            await createExpense(token, newExpense);
+            const updatedExpenses = await getExpense(token);
+            setExpenses(updatedExpenses);
+            setNewExpense({
+                description: '',
+                amount: '',
+                date: '',
+                category: ''
+            });
+        } catch (error) {
+            console.error("Failed to create expense:", error);
+        }
+    }
 
     if (!isSignedIn) {
         return(<Link to="/sign-in">Please sign in to view the dashboard.</Link>);
@@ -80,6 +114,59 @@ function Dashboard() {
     return (
         <div>
             <h1>Dashboard</h1>
+            <div className = "form-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {expenses.map((expense) => (
+                            <tr key = {expense.id}>
+                                <td>{expense.description}</td>
+                                <td>{expense.amount}</td>
+                                <td>{expense.date}</td>
+                                <td>{expense.category}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <form onSubmit={handleSubmit}>
+                <input 
+                type = "text" 
+                placeholder = "Description" 
+                value = {newExpense.description} 
+                onChange = {(e) => setNewExpense({...newExpense, description: e.target.value})} 
+                required/>
+                <input 
+                type = "number" 
+                placeholder = "Amount" 
+                value = {newExpense.amount} 
+                onChange = {(e) => setNewExpense({...newExpense, amount: e.target.value})} 
+                required/>
+                <input 
+                type = "date" 
+                value = {newExpense.date} 
+                onChange = {(e) => setNewExpense({...newExpense, date: e.target.value})} 
+                required/>
+                <select
+                    value = {newExpense.category}
+                    onChange = {(e) => setNewExpense({...newExpense, category: e.target.value})}
+                    required >
+                    <option value = "">Select a category</option>
+                    <option value = "Food">Food</option>
+                    <option value = "Transport">Transport</option>
+                    <option value = "Entertainment">Entertainment</option>
+                    <option value = "Other">Other</option>
+                </select>
+                <button type = "submit">Add Expense</button>
+            </form>
         </div>
     )
 }

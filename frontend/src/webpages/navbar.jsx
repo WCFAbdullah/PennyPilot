@@ -4,7 +4,7 @@ import { PiCoins } from "react-icons/pi";
 
 function Navbar() {
   return (
-    <nav className="bg-black text-white shadow-lg">
+    <nav className="bg-black text-white shadow-lg z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center space-x-2 text-xl font-bold text-white hover:text-gray-300 transition duration-150">

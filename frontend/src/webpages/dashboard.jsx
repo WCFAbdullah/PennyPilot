@@ -27,7 +27,7 @@ const TimeBasedGreeting = () => {
   const { user } = useUser();
   const message = `${greeting}, ${user.firstName}!`;
   return (
-      <h1 className = "text-4xl font-bold text-gray-900 mb-8 text-center">{message}</h1>
+      <h1 className = "text-4xl font-bold text-white mb-8 text-center">{message}</h1>
   );
 };
 
@@ -183,8 +183,8 @@ function Dashboard() {
 
     if (!isSignedIn) {
         return (
-            <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-100 to-teal-100">
-                <Link to="/sign-in" className="px-6 py-3 text-white bg-blue-600 rounded-full hover:bg-blue-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
+                <Link to="/sign-in" className="px-6 py-3 text-indigo-100 bg-indigo-600 rounded-full hover:bg-indigo-500 transition duration-300 shadow-lg hover:shadow-indigo-500/30">
                     Please sign in to view the dashboard
                 </Link>
             </div>
@@ -192,58 +192,58 @@ function Dashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-100 to-teal-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <TimeBasedGreeting />
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-white rounded-xl shadow-md p-6 flex items-center space-x-4">
-                        <div className="p-3 bg-blue-100 rounded-full">
-                            <CurrencyDollarIcon className="h-8 w-8 text-blue-600" />
+                    <div className="bg-gray-900/50 backdrop-blur rounded-xl shadow-lg p-6 flex items-center space-x-4 border border-indigo-500/20">
+                        <div className="p-3 bg-indigo-500/20 rounded-full">
+                            <CurrencyDollarIcon className="h-8 w-8 text-indigo-400" />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500">Total Expenses</p>
-                            <p className="text-2xl font-semibold text-gray-900">${calculateTotalExpenses()}</p>
+                            <p className="text-sm font-medium text-indigo-300">Total Expenses</p>
+                            <p className="text-2xl font-semibold text-indigo-100">${calculateTotalExpenses()}</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl shadow-md p-6 flex items-center space-x-4">
-                        <div className="p-3 bg-green-100 rounded-full">
-                            <ChartBarIcon className="h-8 w-8 text-green-600" />
+                    <div className="bg-gray-900/50 backdrop-blur rounded-xl shadow-lg p-6 flex items-center space-x-4 border border-indigo-500/20">
+                        <div className="p-3 bg-indigo-500/20 rounded-full">
+                            <ChartBarIcon className="h-8 w-8 text-indigo-400" />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500">Number of Expenses</p>
-                            <p className="text-2xl font-semibold text-gray-900">{expenses.length}</p>
+                            <p className="text-sm font-medium text-indigo-300">Number of Expenses</p>
+                            <p className="text-2xl font-semibold text-indigo-100">{expenses.length}</p>
                         </div>
                     </div>
-                    <div className="bg-white rounded-xl shadow-md p-6 flex items-center space-x-4">
-                        <div className="p-3 bg-purple-100 rounded-full">
-                            <CalendarIcon className="h-8 w-8 text-purple-600" />
+                    <div className="bg-gray-900/50 backdrop-blur rounded-xl shadow-lg p-6 flex items-center space-x-4 border border-indigo-500/20">
+                        <div className="p-3 bg-indigo-500/20 rounded-full">
+                            <CalendarIcon className="h-8 w-8 text-indigo-400" />
                         </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500">Last Updated</p>
-                            <p className="text-2xl font-semibold text-gray-900">{new Date().toLocaleDateString()}</p>
+                            <p className="text-sm font-medium text-indigo-300">Last Updated</p>
+                            <p className="text-2xl font-semibold text-indigo-100">{new Date().toLocaleDateString()}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white shadow-lg rounded-xl overflow-hidden mb-8 backdrop-filter backdrop-blur-lg bg-opacity-80">
-                    <div className="p-6 ">
-                        <h2 className="text-2xl font-semibold text-black">Expense List</h2>
+                <div className="bg-gray-900/50 backdrop-blur shadow-lg rounded-xl overflow-hidden mb-8 border border-indigo-500/20">
+                    <div className="p-6">
+                        <h2 className="text-2xl font-semibold text-indigo-100">Expense List</h2>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-indigo-500/20">
+                            <thead className="bg-gray-900/50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-indigo-300 uppercase tracking-wider">Description</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-indigo-300 uppercase tracking-wider">Amount</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-indigo-300 uppercase tracking-wider">Date</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-indigo-300 uppercase tracking-wider">Category</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-indigo-300 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="divide-y divide-indigo-500/20">
                                 {expenses.map((expense) => (
-                                    <tr key={expense._id} className="hover:bg-gray-50 transition duration-150">
+                                    <tr key={expense._id} className="hover:bg-indigo-500/10 transition duration-150">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <input
                                                 type="text"
@@ -256,7 +256,7 @@ function Dashboard() {
                                                     );
                                                     setExpenses(updatedExpenses);
                                                 }}
-                                                className="w-full px-2 py-1 border rounded "
+                                                className="w-full px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
                                             />
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -269,7 +269,7 @@ function Dashboard() {
                                                     );
                                                     setExpenses(updatedExpenses);
                                                 }}
-                                                className="w-full px-2 py-1 border rounded"
+                                                className="w-full px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
                                             />
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -284,6 +284,7 @@ function Dashboard() {
                                                     );
                                                     setExpenses(updatedExpenses);
                                                 }}
+                                                className="px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
                                             />
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -295,20 +296,21 @@ function Dashboard() {
                                                     );
                                                     setExpenses(updatedExpenses);
                                                 }}
-                                                className="w-full px-2 py-1 border rounded "
+                                                className="w-full px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
                                             >
                                                 <option value="">Select a category</option>
                                                 <option value="Food">Food</option>
                                                 <option value="Transport">Transport</option>
                                                 <option value="Entertainment">Entertainment</option>
+                                                <option value="Utilities">Utilities</option>
                                                 <option value="Other">Other</option>
                                             </select>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button onClick={() => handleDelete(expense._id)} className="text-red-600 hover:text-red-900 mr-2 transition duration-150">
+                                            <button onClick={() => handleDelete(expense._id)} className="text-rose-400 hover:text-rose-300 mr-2 transition duration-150">
                                                 <TrashIcon className="h-5 w-5" />
                                             </button>
-                                            <button onClick={() => handleUpdate(expense)} className="text-blue-600 hover:text-blue-900 transition duration-150">
+                                            <button onClick={() => handleUpdate(expense)} className="text-indigo-400 hover:text-indigo-300 transition duration-150">
                                                 <PencilIcon className="h-5 w-5" />
                                             </button>
                                         </td>
@@ -319,12 +321,12 @@ function Dashboard() {
                     </div>
                 </div>
 
-                <div className="bg-white shadow-lg rounded-xl p-6 backdrop-filter backdrop-blur-lg bg-opacity-80">
-                    <h2 className="text-2xl font-semibold mb-4 text-gray-900">Add New Expense</h2>
+                <div className="bg-gray-900/50 backdrop-blur shadow-lg rounded-xl p-6 border border-indigo-500/20">
+                    <h2 className="text-2xl font-semibold mb-4 text-indigo-100">Add New Expense</h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                                <label htmlFor="description" className="block text-sm font-medium text-indigo-300">Description</label>
                                 <input
                                     id="description"
                                     type="text"
@@ -332,11 +334,11 @@ function Dashboard() {
                                     value={newExpense.description}
                                     onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
                                     required
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm "
+                                    className="mt-1 block w-full px-3 py-2 bg-gray-900/50 border border-indigo-500/30 rounded-md shadow-sm text-indigo-100 placeholder-indigo-500/50 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20"
                                 />
                             </div>
                             <div>
-                                <label htmlFor="amount" className="block text-sm font-medium text-gray-700">Amount</label>
+                                <label htmlFor="amount" className="block text-sm font-medium text-indigo-300">Amount</label>
                                 <input
                                     id="amount"
                                     type="number"
@@ -344,39 +346,40 @@ function Dashboard() {
                                     value={newExpense.amount}
                                     onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
                                     required
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm "
+                                    className="mt-1 block w-full px-3 py-2 bg-gray-900/50 border border-indigo-500/30 rounded-md shadow-sm text-indigo-100 placeholder-indigo-500/50 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20"
                                 />
                             </div>
                             <div>
-                                <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
+                                <label htmlFor="date" className="block text-sm font-medium text-indigo-300">Date</label>
                                 <input
                                     id="date"
                                     type="date"
                                     value={newExpense.date}
                                     onChange={(e) => setNewExpense({ ...newExpense, date: e.target.value })}
                                     required
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm "
+                                    className="mt-1 block w-full px-3 py-2 bg-gray-900/50 border border-indigo-500/30 rounded-md shadow-sm text-indigo-100 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20"
                                 />
                             </div>
                             <div>
-                                <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
+                                <label htmlFor="category" className="block text-sm font-medium text-indigo-300">Category</label>
                                 <select
                                     id="category"
                                     value={newExpense.category}
                                     onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
                                     required
-                                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm "
+                                    className="mt-1 block w-full px-3 py-2 bg-gray-900/50 border border-indigo-500/30 rounded-md shadow-sm text-indigo-100 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20"
                                 >
                                     <option value="">Select a category</option>
                                     <option value="Food">Food</option>
                                     <option value="Transport">Transport</option>
                                     <option value="Entertainment">Entertainment</option>
+                                    <option value="Utilities">Utilities</option>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
                         </div>
                         <div>
-                            <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black transition duration-150">
+                            <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
                                 <PlusIcon className="h-5 w-5 mr-2" />
                                 Add Expense
                             </button>
@@ -384,7 +387,6 @@ function Dashboard() {
                     </form>
                 </div>
             </div>
-            
         </div>
     )
 }

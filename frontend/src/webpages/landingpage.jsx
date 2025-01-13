@@ -94,7 +94,6 @@ function LandingPage() {
           ))}
         </motion.div>
       </main>
-      <Footer />
     </div>
   )
 }

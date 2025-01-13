@@ -47,7 +47,7 @@ const TimeBasedGreeting = () => {
   }, []); 
   
   const { user } = useUser();
-  const message = `${greeting}, ${user.firstName}!`;
+  const message = `${greeting}, ${user.firstName}`;
   return (
       <h1 className = "text-4xl font-bold text-white mb-8 text-center">{message}</h1>
   );
@@ -375,82 +375,84 @@ function Dashboard() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-indigo-500/20">
-                                {expenses.map((expense) => (
-                                    <tr key={expense._id} className="hover:bg-indigo-500/10 transition duration-150">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <input
-                                                type="text"
-                                                value={expense.description}
-                                                onChange={(e) => {
-                                                    const updatedExpenses = expenses.map(exp =>
-                                                        exp._id === expense._id
-                                                            ? { ...exp, description: e.target.value }
-                                                            : exp
-                                                    );
-                                                    setExpenses(updatedExpenses);
-                                                }}
-                                                className="w-full px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
-                                            />
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <input
-                                                type="number"
-                                                value={expense.amount}
-                                                onChange={(e) => {
-                                                    const updatedExpenses = expenses.map(exp =>
-                                                        exp._id === expense._id ? { ...exp, amount: e.target.value } : exp
-                                                    );
-                                                    setExpenses(updatedExpenses);
-                                                }}
-                                                className="w-full px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
-                                            />
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <input
-                                                type="date"
-                                                value={expense.date ? new Date(expense.date).toISOString().split('T')[0] : ''}
-                                                onChange={(e) => {
-                                                    const updatedExpenses = expenses.map(exp =>
-                                                        exp._id === expense._id
-                                                            ? { ...exp, date: e.target.value }
-                                                            : exp
-                                                    );
-                                                    setExpenses(updatedExpenses);
-                                                }}
-                                                style={dateInputStyle}
-                                                className="[color-scheme:dark]px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
-                                                
-                                            />
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <select
-                                                value={expense.category}
-                                                onChange={(e) => {
-                                                    const updatedExpenses = expenses.map(exp =>
-                                                        exp._id === expense._id ? { ...exp, category: e.target.value } : exp
-                                                    );
-                                                    setExpenses(updatedExpenses);
-                                                }}
-                                                className="w-full px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
-                                            >
-                                                <option value="">Select a category</option>
-                                                <option value="Food">Food</option>
-                                                <option value="Transport">Transport</option>
-                                                <option value="Entertainment">Entertainment</option>
-                                                <option value="Utilities">Utilities</option>
-                                                <option value="Other">Other</option>
-                                            </select>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button onClick={() => handleDelete(expense._id)} className="text-rose-400 hover:text-rose-300 mr-2 transition duration-150">
-                                                <TrashIcon className="h-5 w-5" />
-                                            </button>
-                                            <button onClick={() => handleUpdate(expense)} className="text-indigo-400 hover:text-indigo-300 transition duration-150">
-                                                <PencilIcon className="h-5 w-5" />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {[...expenses]
+                                    .sort((a, b) => new Date(b.date) - new Date(a.date))  // Sort by date, newest first
+                                    .map((expense) => (
+                                        <tr key={expense._id} className="hover:bg-indigo-500/10 transition duration-150">
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <input
+                                                    type="text"
+                                                    value={expense.description}
+                                                    onChange={(e) => {
+                                                        const updatedExpenses = expenses.map(exp =>
+                                                            exp._id === expense._id
+                                                                ? { ...exp, description: e.target.value }
+                                                                : exp
+                                                        );
+                                                        setExpenses(updatedExpenses);
+                                                    }}
+                                                    className="w-full px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
+                                                />
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <input
+                                                    type="number"
+                                                    value={expense.amount}
+                                                    onChange={(e) => {
+                                                        const updatedExpenses = expenses.map(exp =>
+                                                            exp._id === expense._id ? { ...exp, amount: e.target.value } : exp
+                                                        );
+                                                        setExpenses(updatedExpenses);
+                                                    }}
+                                                    className="w-full px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
+                                                />
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <input
+                                                    type="date"
+                                                    value={expense.date ? new Date(expense.date).toISOString().split('T')[0] : ''}
+                                                    onChange={(e) => {
+                                                        const updatedExpenses = expenses.map(exp =>
+                                                            exp._id === expense._id
+                                                                ? { ...exp, date: e.target.value }
+                                                                : exp
+                                                        );
+                                                        setExpenses(updatedExpenses);
+                                                    }}
+                                                    style={dateInputStyle}
+                                                    className="[color-scheme:dark]px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
+                                                    
+                                                />
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <select
+                                                    value={expense.category}
+                                                    onChange={(e) => {
+                                                        const updatedExpenses = expenses.map(exp =>
+                                                            exp._id === expense._id ? { ...exp, category: e.target.value } : exp
+                                                        );
+                                                        setExpenses(updatedExpenses);
+                                                    }}
+                                                    className="w-full px-2 py-1 rounded bg-gray-900/50 text-indigo-100 border border-indigo-500/30 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 transition duration-150"
+                                                >
+                                                    <option value="">Select a category</option>
+                                                    <option value="Food">Food</option>
+                                                    <option value="Transport">Transport</option>
+                                                    <option value="Entertainment">Entertainment</option>
+                                                    <option value="Utilities">Utilities</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <button onClick={() => handleDelete(expense._id)} className="text-rose-400 hover:text-rose-300 mr-2 transition duration-150">
+                                                    <TrashIcon className="h-5 w-5" />
+                                                </button>
+                                                <button onClick={() => handleUpdate(expense)} className="text-indigo-400 hover:text-indigo-300 transition duration-150">
+                                                    <PencilIcon className="h-5 w-5" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>
@@ -493,6 +495,7 @@ function Dashboard() {
                                     onChange={(e) => setNewExpense({ ...newExpense, date: e.target.value })}
                                     required
                                     className="mt-1 block w-full px-3 py-2 bg-gray-900/50 border border-indigo-500/30 rounded-md shadow-sm text-indigo-100 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20"
+                                    style={dateInputStyle}
                                 />
                             </div>
                             <div>

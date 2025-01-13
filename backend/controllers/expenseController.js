@@ -13,9 +13,10 @@ const getExpenses = async (req, res) => {
 // Create a new expense
 const createExpense = async (req, res) => {
     try {
-        const { description, amount, category } = req.body;
+        const { description, amount, category, date } = req.body;
         const expense = await Expense.create({
             userId: req.auth.userId,
+            date,
             description,
             amount,
             category

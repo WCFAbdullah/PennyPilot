@@ -249,7 +249,7 @@ function Dashboard() {
         return (
             <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
                 <Link to="/sign-in" className="px-6 py-3 text-indigo-100 bg-indigo-600 rounded-full hover:bg-indigo-500 transition duration-300 shadow-lg hover:shadow-indigo-500/30">
-                    Please sign in to view the dashboard
+                    Please sign in
                 </Link>
             </div>
         );

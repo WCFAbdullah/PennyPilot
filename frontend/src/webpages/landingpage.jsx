@@ -49,7 +49,7 @@ function LandingPage() {
             Take Control of Your Finances
           </motion.h1>
           <motion.p 
-            className="text-xl text-indigo-100 mb-8"
+            className="text-xl text-indigo-100 mb-12"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}

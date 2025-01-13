@@ -6,7 +6,9 @@ function SignInPage() {
       <SignIn 
         routing="path" 
         path="/sign-in" 
-        redirectToAfterSignIn="/dashboard"
+        afterSignIn={{
+          redirectUrl: "/dashboard"
+        }}
         signUpUrl="/sign-up"
       />
     </div>

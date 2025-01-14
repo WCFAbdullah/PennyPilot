@@ -27,8 +27,6 @@ app.options('*', (req, res) => {
 });
 
 
-app.use(ClerkExpressRequireAuth());
-
 app.use(express.json());
 
 app.use('/api/expenses', expenseRoutes);

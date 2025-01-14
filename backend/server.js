@@ -11,7 +11,7 @@ connectDB();
 
 // Configure CORS to allow specific origin
 app.use(cors({
-    origin: 'https://www.pennypilot.dev', // Allow this origin
+    origin: 'https://www.pennypilot.dev/dashboard', // Allow this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
     credentials: true, // Allow cookies, authorization headers, etc.
 }));
@@ -19,7 +19,7 @@ app.use(cors({
 app.use(express.json());
 app.use('/api/expenses', ClerkExpressRequireAuth(), expenseRoutes);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

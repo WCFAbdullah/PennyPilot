@@ -7,6 +7,7 @@ import { PlusIcon, TrashIcon, PencilIcon, ChartBarIcon, CurrencyDollarIcon, Cale
 import { useUser } from '@clerk/clerk-react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend, LineElement } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+require('dotenv').config();
 
 ChartJS.register(
     CategoryScale,

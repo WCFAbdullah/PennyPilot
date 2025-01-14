@@ -6,16 +6,21 @@ require('dotenv').config();
 
 const app = express();
 
-connectDB()
+connectDB();
+
 
 const corsOptions = {
     origin: 'https://www.pennypilot.dev',  
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  
-    allowedHeaders: ['Authorization'],
+    allowedHeaders: ['Authorization', 'Content-Type'], 
     credentials: true,  
 };
 
-app.use(cors(corsOptions));  
+
+app.use(cors(corsOptions));
+
+
+app.options('*', cors(corsOptions));  
 
 app.use(express.json());
 

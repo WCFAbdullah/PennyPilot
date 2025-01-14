@@ -9,24 +9,21 @@ const app = express();
 
 connectDB();
 
-app.options('*', cors());
-
-
-app.use(ClerkExpressRequireAuth());
-
 
 app.use(cors({
     origin: ['https://www.pennypilot.dev', 'https://pennypilot.dev'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Authorization'],
     credentials: true,
 }));
 
+
+
 app.use(express.json());
 
+app.use(ClerkExpressRequireAuth());
 
 app.use('/api/expenses', expenseRoutes);
-
 
 const PORT = process.env.PORT || 3000;
 

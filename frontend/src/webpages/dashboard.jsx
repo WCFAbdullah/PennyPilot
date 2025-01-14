@@ -8,7 +8,6 @@ import { useUser } from '@clerk/clerk-react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend, LineElement } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
-
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -54,8 +53,8 @@ const TimeBasedGreeting = () => {
   );
 };
 
-const API_URL = import.meta.env.VITE_API_URL
-console.log("API_URL", API_URL);
+
+const API_URL = "http://localhost:3000";
 
 export const getExpense = async (token) => {
     try {
@@ -294,7 +293,7 @@ function Dashboard() {
 
                     <div className="flex items-center justify-center">
                         <div className="backdrop-blur-sm bg-white/5 rounded-xl border border-white/10 p-6 shadow-xl text-center w-full">
-                            <h2 className="text-xl font-semibold text-white/90 mb-4">Expenses</h2>
+                            <h2 className="text-xl font-semibold text-white/90 mb-4">Expense Timeline</h2>
                             {expenses.length > 0 ? (
                                 <Line 
                                     data={prepareLineChartData()}

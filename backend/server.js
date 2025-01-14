@@ -9,19 +9,26 @@ const app = express();
 
 connectDB();
 
-
 app.use(cors({
     origin: ['https://www.pennypilot.dev', 'https://pennypilot.dev'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  
     allowedHeaders: ['Authorization'],
-    credentials: true,
+    credentials: true, 
 }));
 
 
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();  
+  }
+  next();
+});
+
+
+app.use(ClerkExpressRequireAuth());
 
 app.use(express.json());
 
-app.use(ClerkExpressRequireAuth());
 
 app.use('/api/expenses', expenseRoutes);
 

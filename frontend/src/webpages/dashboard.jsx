@@ -54,7 +54,7 @@ const TimeBasedGreeting = () => {
 };
 
 
-const API_URL = "http://localhost:3000";
+const API_URL = process.env.APIURLVERC;
 
 export const getExpense = async (token) => {
     try {

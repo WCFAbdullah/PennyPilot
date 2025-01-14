@@ -3,7 +3,7 @@ require ('dotenv').config();
 
 const connectDB = async () => {           // Connecting to database
     try {
-        const dbURI = "mongodb+srv://tahashahid246:BK897zdF3oCdFBoF@pennypilotmdbcluster.nltbazy.mongodb.net/";
+        const dbURI = process.env.MONGODB_URI;
         const conn = await mongoose.connect(dbURI);
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {

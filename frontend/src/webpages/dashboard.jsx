@@ -242,8 +242,16 @@ function Dashboard() {
     }
 
     const calculateTotalExpenses = () => {
-        return expenses.reduce((total, expense) => total + parseFloat(expense.amount), 0).toFixed(2);
-    }
+        // Check if expenses is an array and not empty
+        if (Array.isArray(expenses) && expenses.length > 0) {
+            return expenses.reduce((total, expense) => {
+                const amount = parseFloat(expense.amount);
+                return total + (isNaN(amount) ? 0 : amount); 
+            }, 0).toFixed(2); 
+        } else {
+            return '0.00'; 
+        }
+    };
 
     if (!isSignedIn) {
         return (

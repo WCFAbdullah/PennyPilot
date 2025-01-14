@@ -9,15 +9,24 @@ const app = express();
 
 connectDB();
 
-// Configure CORS to allow specific origin
+app.options('*', cors());
+
+
+app.use(ClerkExpressRequireAuth());
+
+
 app.use(cors({
-    origin: '*', // Allow this origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
-    credentials: true, // Allow cookies, authorization headers, etc.
+    origin: ['https://www.pennypilot.dev', 'https://pennypilot.dev'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
 }));
 
 app.use(express.json());
-app.use('/api/expenses', ClerkExpressRequireAuth(), expenseRoutes);
+
+
+app.use('/api/expenses', expenseRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 

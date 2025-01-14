@@ -3,32 +3,20 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const expenseRoutes = require('./routes/expenseRoutes');
 require('dotenv').config();
+const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
+
 
 const app = express();
 
 connectDB();
 
-
-const corsOptions = {
-    origin: 'https://www.pennypilot.dev',  
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  
-    allowedHeaders: ['Authorization', 'Content-Type'], 
-    credentials: true,  
-};
-
-
-app.use(cors(corsOptions));
-
-
-app.options('*', cors(corsOptions));  
-
+app.use(cors());
 app.use(express.json());
+app.use('/api/expenses', ClerkExpressRequireAuth(), expenseRoutes);
 
-app.use('/api/expenses', expenseRoutes);
-
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`http://localhost:${PORT}`);
-});
+}); 

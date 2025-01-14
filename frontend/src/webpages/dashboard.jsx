@@ -54,7 +54,7 @@ const TimeBasedGreeting = () => {
 };
 
 
-const API_URL = import.meta.env.VITE_APIURLVERC;
+const API_URL = "http://localhost:3000";
 
 export const getExpense = async (token) => {
     try {
@@ -242,16 +242,8 @@ function Dashboard() {
     }
 
     const calculateTotalExpenses = () => {
-        // Check if expenses is an array and not empty
-        if (Array.isArray(expenses) && expenses.length > 0) {
-            return expenses.reduce((total, expense) => {
-                const amount = parseFloat(expense.amount);
-                return total + (isNaN(amount) ? 0 : amount); 
-            }, 0).toFixed(2); 
-        } else {
-            return '0.00'; 
-        }
-    };
+        return expenses.reduce((total, expense) => total + parseFloat(expense.amount), 0).toFixed(2);
+    }
 
     if (!isSignedIn) {
         return (

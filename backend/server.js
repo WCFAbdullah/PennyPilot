@@ -11,7 +11,7 @@ connectDB();
 
 // Configure CORS to allow specific origin
 app.use(cors({
-    origin: 'https://www.pennypilot.dev/dashboard', // Allow this origin
+    origin: '*', // Allow this origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
     credentials: true, // Allow cookies, authorization headers, etc.
 }));

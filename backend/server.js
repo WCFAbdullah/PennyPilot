@@ -16,10 +16,10 @@ app.get("/", (req, res) => {
 app.use(express.json());
 app.use("/api/expenses", expenseRoutes);
 
-// Only start server in development
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-}
+const PORT = process.env.PORT || 3000; // Use the PORT from environment, or 3000 as fallback
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 module.exports = app;

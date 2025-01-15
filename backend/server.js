@@ -5,6 +5,10 @@ const expenseRoutes = require("./routes/expenseRoutes");
 require("dotenv").config();
 
 const app = express();
+app.use(express.json());
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+connectDB();
 
 // CORS Configuration
 const allowedOrigins = [
@@ -23,9 +27,6 @@ app.use(
     },
   })
 );
-
-app.use(express.json());
-connectDB();
 
 // Health check route
 app.get("/api/health", (req, res) => {

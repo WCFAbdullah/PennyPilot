@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node ./api/server.js",
+    "dev": "nodemon ./api/server.js"
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "^5.1.6",

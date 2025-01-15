@@ -1,7 +1,9 @@
+// api/expenses.js
+
 const express = require("express");
 const cors = require("cors");
-const connectDB = require("./config/db");
-const expenseRoutes = require("./routes/expenseRoutes");
+const connectDB = require("../config/db");
+const expenseRoutes = require("../routes/expenseRoutes");
 require("dotenv").config();
 const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
 
@@ -20,7 +22,6 @@ connectDB();
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
@@ -35,9 +36,5 @@ app.use(express.json());
 // Apply Clerk authentication and expense routes
 app.use("/api/expenses", ClerkExpressRequireAuth(), expenseRoutes);
 
-const PORT = 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`http://localhost:${PORT}`);
-});
+// Export the Express app as a serverless function
+module.exports = app;

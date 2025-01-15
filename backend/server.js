@@ -6,20 +6,42 @@ require("dotenv").config();
 
 const app = express();
 
-// Add health check endpoint
-app.get("/", (req, res) => {
+// CORS Configuration
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://penny-pilot-iota.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
+
+app.use(express.json());
+
+// Health check route
+app.get("/api/health", (req, res) => {
   res.json({ status: "API is running" });
 });
 
-// ...existing CORS setup...
-
-app.use(express.json());
+// Routes
 app.use("/api/expenses", expenseRoutes);
 
-// Only start server in development
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-}
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong!" });
+});
+
+// Remove conditional server start
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 module.exports = app;

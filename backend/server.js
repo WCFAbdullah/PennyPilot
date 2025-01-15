@@ -10,8 +10,8 @@ const app = express();
 // Allowed origins (whitelisted domains or addresses)
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://penny-pilot-iota.vercel.app/",
-  "https://anothertrusteddomain.com",
+  "https://penny-pilot-iota.vercel.app",
+  "https://penny-pilot-abdullahs-projects-a3074dd7.vercel.app",
 ];
 
 connectDB();

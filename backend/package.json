@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "node ./api/server.js",
-    "dev": "nodemon ./api/server.js"
+    "start": "vercel dev",
+    "dev": "vercel dev"
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "^5.1.6",

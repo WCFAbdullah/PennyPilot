@@ -36,5 +36,5 @@ app.use(express.json());
 // Apply Clerk authentication and expense routes
 app.use("/api/expenses", ClerkExpressRequireAuth(), expenseRoutes);
 
-// Export the Express app as a serverless function
+// Export the Express app as a Vercel serverless function
 module.exports = app;

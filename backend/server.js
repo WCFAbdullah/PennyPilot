@@ -1,9 +1,7 @@
-// api/expenses.js
-
 const express = require("express");
 const cors = require("cors");
-const connectDB = require("../config/db");
-const expenseRoutes = require("../routes/expenseRoutes");
+const connectDB = require("./config/db");
+const expenseRoutes = require("./routes/expenseRoutes");
 require("dotenv").config();
 const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
 
@@ -35,6 +33,12 @@ app.use(express.json());
 
 // Apply Clerk authentication and expense routes
 app.use("/api/expenses", ClerkExpressRequireAuth(), expenseRoutes);
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // Export the Express app as a Vercel serverless function
 module.exports = app;

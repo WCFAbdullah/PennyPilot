@@ -25,6 +25,7 @@ app.use(
 );
 
 app.use(express.json());
+connectDB();
 
 // Health check route
 app.get("/api/health", (req, res) => {

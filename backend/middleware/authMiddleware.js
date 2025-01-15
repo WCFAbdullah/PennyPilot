@@ -7,7 +7,7 @@ const protect = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, "your_secret_key");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded.userId; // Attach user ID to request
     next();
   } catch (err) {
